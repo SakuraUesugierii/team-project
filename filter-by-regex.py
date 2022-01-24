@@ -9,27 +9,38 @@
 # !!! You may need to run in your Shell: pip install pandas !!!
 
 import os
-import pandas
+import pandas 
 import re
+from pandas import *
+import csv
 
 allTweets = []
-with open('pro-who-tweets.csv') as file:
-  allTweets = file.read()
-  print(allTweets)
-
+# with open('pro-who-tweets.csv') as file:
+#   allTweets = file.read()
+  # print(allTweets)
+# allTweets is a string
 
 # -- Preprocessing: -- We don't care about the other data in our .csv. We want to only get the tweet text data in 'content' column.
 # -- Suggested approach: -- create a list variable and save the 'content' column of the pro-who-tweets.csv file as your list. Print the length of the list. See here for more: https://www.geeksforgeeks.org/python-read-csv-columns-into-list/
 
+# data = read_csv('pro-who-tweets.csv')
+data = open('pro-who-tweets.csv', 'r')
+file = csv.DictReader(data) 
+for col in file:
+  allTweets.append(col['content'])
+print(allTweets)
 
 
 
 
 # === Part 1: Filtering ===
 
-# -- First filter: -- Remove duplicates. 
+# -- First filter: -- Remove duplicates. - First filter: -- Remove duplicates. 
 # -- Suggested approach: -- using your list, convert the list into a dictionary, which will automatically remove duplicates. Then convert your dictionary back into a list. Print the length of the list. https://www.w3schools.com/python/python_howto_remove_duplicates.asp
-
+print("**********************************")
+allTweets = dict.fromkeys(allTweets)
+allTweets = list(allTweets)
+print(allTweets)
 
 
 
@@ -37,7 +48,8 @@ with open('pro-who-tweets.csv') as file:
 # -- Second filter: -- Remove tweets where the last non-whitespace character before the word 'who' is not a letter or a comma. See Lecture 3 slides for more explanation of this!
 # -- Suggested approach: -- Use the list you created as a result of the previous filter. Save the 10 possible pronouns in a list. Create a loop to run through each entry in your list. Use a conditional statement to construct a regular expression match, and save the list elements matching your condition. Print the length of the list.
 
-
+#for tweet in allTweets:
+  
 
 
 
@@ -73,21 +85,21 @@ with open('pro-who-tweets.csv') as file:
 # -- Instruction: -- You now need to find out whether the tweets you have left are "literary" or "non-literary", according to CTK's classification. I've written a bit of this for you. Modify the block of code below so that it runs with your variable names. You should replace 'tweetList' in the 'for' block with your variable name that holds the final filtered list of 'PRO who' tweets.
 
 # Test variable: contains a short list of test utterances for the pattern "who <word1> <word2>"
-tweetList = ['this is a quote: he who shall not be named', 'who among us really', 'jeff is wondering who sings', 'he who shall not be named again', 'but who among us is perfect']
+#tweetList = ['this is a quote: he who shall not be named', 'who among us really', 'jeff is wondering who sings', 'he who shall not be named again', 'but who among us is perfect']
 
 # This evaluates each tweet in TweetList for whether it contains the specified regex search, and whether that regex pattern in a tweet matches exactly to any other tweet in the list. If it does, it is assigned a value True. If it doesn't, it's assigned a value False.
-trueFalseList = []
-for tweet in tweetList:
-  whoPhrase = re.search("who \w+ \w+", tweet)
-  if whoPhrase is None:
-      trueFalseList.append(False)
-  else:
-      trueFalseList.append(any(whoPhrase.group(0) in t for t in tweetList))
-print(trueFalseList)
+# trueFalseList = []
+# for tweet in tweetList:
+  # whoPhrase = re.search("who \w+ \w+", tweet)
+  # if whoPhrase is None:
+      # trueFalseList.append(False)
+  # else:
+      # trueFalseList.append(any(whoPhrase.group(0) in t for t in tweetList))
+# print(trueFalseList)
 
 # The following takes our two lists, tweetList and trueFalseList, and zips them together. It then creates a dataframe out of this list, that can then be converted to a .csv file
 
-annotatedTweetList = list(zip(tweetList, trueFalseList))
-tweetDataframe = pandas.DataFrame(annotatedTweetList)
-tweetDataframe.to_csv('literary-annotated-tweets.csv', header=["Tweets", "isLiterary"], index=False)
+# annotatedTweetList = list(zip(tweetList, trueFalseList))
+# tweetDataframe = pandas.DataFrame(annotatedTweetList)
+# tweetDataframe.to_csv('literary-annotated-tweets.csv', header=["Tweets", "isLiterary"], index=False)
 
