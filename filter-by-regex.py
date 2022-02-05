@@ -43,7 +43,7 @@ allTweets = dict.fromkeys(allTweets)
 allTweets = list(allTweets)
 print(len(allTweets))
 
-
+#we need to work on this?#
 
 
 # -- Second filter: -- Remove tweets where the last non-whitespace character before the word 'who' is not a letter or a comma. See Lecture 3 slides for more explanation of this!
